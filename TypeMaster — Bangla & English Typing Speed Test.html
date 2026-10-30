@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TypeMaster — Bangla & English Typing Speed Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#0f0c29;
+  --bg2:#302b63;
+  --bg3:#24243e;
+  --primary:#7c3aed;
+  --primary2:#a855f7;
+  --accent:#22d3ee;
+  --success:#22c55e;
+  --error:#ef4444;
+  --gold:#fbbf24;
+  --glass:rgba(255,255,255,0.07);
+  --glass-border:rgba(255,255,255,0.14);
+  --text:#f1f5f9;
+  --muted:#94a3b8;
+  color-scheme: dark;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  font-family:'Poppins','Noto Sans Bengali',sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+  background-size:300% 300%;
+  animation:bgMove 18s ease infinite;
+  color:var(--text);
+  min-height:100vh;
+  padding:16px;
+  padding-top:calc(16px + env(safe-area-inset-top,0px));
+  padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  position:relative;
+  overflow-x:hidden;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(124,58,237,0.25), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(34,211,238,0.2), transparent 40%);
+  pointer-events:none;
+  z-index:0;
+}
+.wrap{max-width:960px;margin:0 auto;position:relative;z-index:1;}
+.hidden{display:none !important;}
+
+/* Glass card */
+.card{
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.35);
+}
+.lang-bn{font-family:'Noto Sans Bengali',sans-serif;}
+
+/* Header */
+.app-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;flex-wrap:wrap;gap:10px;
+}
+.logo{
+  font-weight:800;font-size:1.5rem;
+  background:linear-gradient(90deg,var(--accent),var(--primary2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  display:flex;align-items:center;gap:8px;
+}
+.logo span.ico{font-size:1.6rem;-webkit-text-fill-color:initial;}
+.player-chip{
+  display:flex;align-items:center;gap:10px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  padding:8px 16px;border-radius:999px;font-size:0.85rem;
+}
+.player-chip b{color:var(--accent);}
+.lv-badge{
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  padding:3px 10px;border-radius:999px;font-weight:700;font-size:0.75rem;
+}
+
+/* Buttons */
+.btn{
+  border:none;cursor:pointer;font-family:inherit;font-weight:600;
+  padding:13px 26px;border-radius:14px;font-size:0.95rem;
+  transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn:active{transform:scale(0.96);}
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  color:#fff;box-shadow:0 8px 24px rgba(124,58,237,0.4);
+}
+.btn-primary:hover{box-shadow:0 10px 28px rgba(124,58,237,0.55);transform:translateY(-2px);}
+.btn-ghost{
+  background:var(--glass);border:1px solid var(--glass-border);color:var(--text);
+}
+.btn-ghost:hover{background:rgba(255,255,255,0.12);}
+.btn-gold{
+  background:linear-gradient(135deg,#f59e0b,var(--gold));
+  color:#1e1b12;box-shadow:0 8px 24px rgba(251,191,36,0.4);
+}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-block{width:100%;}
+
+/* Entry screen */
+#screen-entry{display:flex;align-items:center;justify-content:center;min-height:80vh;}
+.entry-box{max-width:460px;width:100%;text-align:center;}
+.entry-box h1{font-size:1.8rem;margin-bottom:6px;}
+.entry-box p.sub{color:var(--muted);margin-bottom:24px;font-size:0.95rem;}
+.input-field{
+  width:100%;padding:14px 16px;border-radius:14px;
+  border:1px solid var(--glass-border);background:rgba(255,255,255,0.06);
+  color:var(--text);font-size:1rem;font-family:inherit;outline:none;
+  transition:border-color .2s;
+}
+.input-field:focus{border-color:var(--accent);}
+.entry-box .emoji-big{font-size:3rem;margin-bottom:10px;}
+
+/* Dashboard */
+.dash-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px;margin:20px 0;
+}
+.stat-box{
+  background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);
+  border-radius:16px;padding:16px;text-align:center;
+}
+.stat-box .val{font-size:1.5rem;font-weight:800;color:var(--accent);}
+.stat-box .lbl{font-size:0.75rem;color:var(--muted);margin-top:4px;}
+.xp-bar-wrap{margin:16px 0;}
+.xp-bar-bg{
+  width:100%;height:14px;border-radius:999px;background:rgba(255,255,255,0.08);
+  overflow:hidden;border:1px solid var(--glass-border);
+}
+.xp-bar-fill{
+  height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  transition:width .6s ease;
+}
+.xp-text{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);margin-top:6px;}
+
+/* Mode toggle */
+.mode-row{display:flex;gap:10px;justify-content:center;margin:20px 0;flex-wrap:wrap;}
+.mode-btn{
+  padding:10px 22px;border-radius:999px;border:1px solid var(--glass-border);
+  background:rgba(255,255,255,0.05);cursor:pointer;font-weight:600;color:var(--muted);
+  transition:all .2s;font-family:inherit;font-size:0.9rem;
+}
+.mode-btn.active{
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:#fff;border-color:transparent;
+}
+.dur-row{display:flex;gap:8px;justify-content:center;margin:14px 0;flex-wrap:wrap;}
+.dur-btn{
+  padding:8px 16px;border-radius:10px;border:1px solid var(--glass-border);
+  background:rgba(255,255,255,0.04);cursor:pointer;color:var(--muted);font-family:inherit;
+  font-size:0.85rem;font-weight:600;
+}
+.dur-btn.active{background:rgba(34,211,238,0.15);color:var(--accent);border-color:var(--accent);}
+
+/* Test screen */
+.live-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;
+}
+.live-box{
+  text-align:center;background:rgba(255,255,255,0.05);border-radius:14px;
+  padding:10px 6px;border:1px solid var(--glass-border);
+}
+.live-box .v{font-size:1.3rem;font-weight:800;}
+.live-box .l{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;}
+#liveTimer{color:var(--gold);}
+#liveWpm{color:var(--accent);}
+#liveAcc{color:var(--success);}
+#liveMistakes{color:var(--error);}
+
+.text-display{
+  font-size:1.3rem;line-height:2;
+  background:rgba(0,0,0,0.25);border-radius:16px;padding:22px;
+  margin-bottom:16px;max-height:220px;overflow-y:auto;
+  letter-spacing:0.3px;border:1px solid var(--glass-border);
+  user-select:none;
+}
+.text-display span{transition:color .08s, background .08s; border-radius:3px;}
+.ch-pending{color:var(--muted);}
+.ch-correct{color:var(--success);}
+.ch-incorrect{color:var(--error);background:rgba(239,68,68,0.18);}
+.ch-current{background:var(--accent);color:#0f172a;border-radius:3px;}
+
+textarea#typingInput{
+  width:100%;min-height:90px;border-radius:16px;
+  background:rgba(255,255,255,0.05);border:2px solid var(--glass-border);
+  color:var(--text);font-size:1.05rem;font-family:inherit;padding:14px 16px;
+  outline:none;resize:none;transition:border-color .2s;
+}
+textarea#typingInput:focus{border-color:var(--primary2);}
+.test-actions{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap;}
+
+/* Results */
+.result-hero{text-align:center;margin-bottom:10px;}
+.result-hero .big{font-size:3rem;}
+.result-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:14px;margin:20px 0;
+}
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+
+/* Certificate */
+#certificateCard{
+  background:linear-gradient(135deg,#1a1333,#2b1a4a);
+  border:3px solid var(--gold);
+  border-radius:20px;padding:36px;position:relative;overflow:hidden;
+  text-align:center;
+}
+#certificateCard::before{
+  content:"";position:absolute;inset:8px;border:1px solid rgba(251,191,36,0.4);
+  border-radius:14px;pointer-events:none;
+}
+.cert-title{font-size:1.8rem;font-weight:800;color:var(--gold);letter-spacing:0.08em;margin-bottom:4px;}
+.cert-sub{color:var(--muted);font-size:0.85rem;margin-bottom:18px;text-transform:uppercase;letter-spacing:0.1em;}
+.cert-name{font-size:2.2rem;font-weight:800;margin:14px 0;color:#fff;
+  font-family:'Great Vibes',cursive;}
+.cert-line{color:var(--muted);font-size:0.95rem;margin-bottom:18px;}
+.cert-details{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:14px;margin:18px 0;text-align:left;
+}
+.cert-details .d-item{
+  background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 14px;
+  border:1px solid rgba(251,191,36,0.2);
+}
+.cert-details .d-lbl{font-size:0.68rem;color:var(--muted);text-transform:uppercase;}
+.cert-details .d-val{font-size:1.05rem;font-weight:700;color:var(--accent);}
+.cert-sign{
+  margin-top:26px;padding-top:18px;border-top:1px dashed rgba(251,191,36,0.4);
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;
+}
+.sign-block{text-align:left;}
+.sign-name{font-family:'Great Vibes',cursive;font-size:1.6rem;color:var(--gold);}
+.sign-role{font-size:0.75rem;color:var(--muted);margin-top:2px;}
+.sign-seal{
+  width:68px;height:68px;border-radius:50%;
+  background:radial-gradient(circle,var(--gold),#b45309);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.65rem;font-weight:800;color:#2a1a04;text-align:center;
+  box-shadow:0 0 0 4px rgba(251,191,36,0.2);
+}
+
+/* Level up modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(5,3,20,0.75);
+  display:flex;align-items:center;justify-content:center;z-index:50;
+  backdrop-filter:blur(6px);padding:20px;
+}
+.levelup-box{
+  text-align:center;padding:40px 30px;max-width:380px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1);
+  background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(34,211,238,0.15));
+}
+@keyframes popIn{
+  0%{transform:scale(0.5);opacity:0;}
+  100%{transform:scale(1);opacity:1;}
+}
+.levelup-box .trophy{font-size:4rem;animation:bounce 1s ease infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+.levelup-box h2{font-size:1.6rem;margin:12px 0 4px;background:linear-gradient(90deg,var(--gold),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.levelup-box p{color:var(--muted);margin-bottom:18px;}
+
+/* Footer */
+footer{
+  text-align:center;margin-top:30px;padding:18px;color:var(--muted);font-size:0.85rem;
+}
+footer b{color:var(--accent);}
+.copyright{font-size:0.75rem;margin-top:4px;opacity:0.8;}
+
+@media(max-width:560px){
+  .live-stats{grid-template-columns:repeat(2,1fr);}
+  .text-display{font-size:1.1rem;}
+  .cert-name{font-size:1.6rem;}
+  .cert-sign{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== ENTRY SCREEN ===== -->
+  <div id="screen-entry">
+    <div class="card entry-box">
+      <div class="emoji-big">⌨️</div>
+      <h1>TypeMaster</h1>
+      <p class="sub">বাংলা ও ইংরেজি টাইপিং স্পিড টেস্ট — আপনার দক্ষতা যাচাই করুন</p>
+      <input id="nameInput" class="input-field" type="text" placeholder="আপনার পূর্ণ নাম লিখুন (Full Name)" maxlength="40" />
+      <br><br>
+      <button class="btn btn-primary btn-block" onclick="enterApp()">🚀 শুরু করুন / Start</button>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div id="screen-dashboard" class="hidden">
+    <div class="app-header">
+      <div class="logo"><span class="ico">⌨️</span> TypeMaster</div>
+      <div class="player-chip">👤 <b id="chipName"></b> <span class="lv-badge" id="chipLevel">Lv.1</span></div>
+    </div>
+
+    <div class="card">
+      <h2 style="text-align:center;" id="dashGreeting"></h2>
+      <div class="xp-bar-wrap">
+        <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpFill" style="width:0%"></div></div>
+        <div class="xp-text">
+          <span id="xpCurrentText">0 XP</span>
+          <span id="xpNeedText">পরবর্তী লেভেল: 150 XP</span>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="stat-box"><div class="val" id="dashLevel">1</div><div class="lbl">Level</div></div>
+        <div class="stat-box"><div class="val" id="dashRank">Rookie</div><div class="lbl">Rank</div></div>
+        <div class="stat-box"><div class="val" id="dashBestEnWpm">0</div><div class="lbl">Best WPM (English)</div></div>
+        <div class="stat-box"><div class="val" id="dashBestBnWpm">0</div><div class="lbl">Best WPM (বাংলা)</div></div>
+      </div>
+
+      <h3 style="text-align:center;margin-top:10px;">ভাষা নির্বাচন করুন</h3>
+      <div class="mode-row">
+        <button class="mode-btn active" id="modeEnBtn" onclick="setLanguage('english')">🇬🇧 English</button>
+        <button class="mode-btn" id="modeBnBtn" onclick="setLanguage('bangla')">🇧🇩 বাংলা</button>
+      </div>
+
+      <h3 style="text-align:center;">সময়সীমা নির্বাচন করুন</h3>
+      <div class="dur-row">
+        <button class="dur-btn" data-d="30" onclick="setDuration(30,this)">30s</button>
+        <button class="dur-btn active" data-d="60" onclick="setDuration(60,this)">60s</button>
+        <button class="dur-btn" data-d="120" onclick="setDuration(120,this)">120s</button>
+      </div>
+
+      <button class="btn btn-primary btn-block" style="margin-top:20px;" onclick="startTest()">▶️ টেস্ট শুরু করুন</button>
+    </div>
+  </div>
+
+  <!-- ===== TEST SCREEN ===== -->
+  <div id="screen-test" class="hidden">
+    <div class="card">
+      <div class="live-stats">
+        <div class="live-box"><div class="v" id="liveTimer">60</div><div class="l">Time Left</div></div>
+        <div class="live-box"><div class="v" id="liveWpm">0</div><div class="l">WPM</div></div>
+        <div class="live-box"><div class="v" id="liveAcc">100%</div><div class="l">Accuracy</div></div>
+        <div class="live-box"><div class="v" id="liveMistakes">0</div><div class="l">Mistakes</div></div>
+      </div>
+
+      <div id="textDisplay" class="text-display lang-bn"></div>
+      <textarea id="typingInput" placeholder="এখানে টাইপ করা শুরু করুন..." autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+
+      <div class="test-actions">
+        <button class="btn btn-ghost" onclick="restartSameTest()">🔄 Restart</button>
+        <button class="btn btn-ghost" onclick="backToDashboard()">⬅️ Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RESULTS SCREEN ===== -->
+  <div id="screen-results" class="hidden">
+    <div class="card">
+      <div class="result-hero">
+        <div class="big" id="resultEmoji">🎉</div>
+        <h2 id="resultTitle">দারুণ হয়েছে!</h2>
+        <p style="color:var(--muted);" id="resultSub"></p>
+      </div>
+      <div class="result-grid">
+        <div class="stat-box"><div class="val" id="resWpm">0</div><div class="lbl">WPM</div></div>
+        <div class="stat-box"><div class="val" id="resAcc">0%</div><div class="lbl">Accuracy</div></div>
+        <div class="stat-box"><div class="val" id="resMistakes">0</div><div class="lbl">Mistakes</div></div>
+        <div class="stat-box"><div class="val" id="resXp">0</div><div class="lbl">XP Gained</div></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-gold" id="certBtn" onclick="goCertificate()" disabled>🏆 Generate Certificate</button>
+        <button class="btn btn-primary" onclick="startTest()">🔁 আবার খেলুন</button>
+        <button class="btn btn-ghost" onclick="backToDashboard()">⬅️ Dashboard</button>
+      </div>
+      <p id="certHint" style="text-align:center;color:var(--muted);font-size:0.8rem;margin-top:10px;">সার্টিফিকেট পেতে কমপক্ষে ৯০% নির্ভুলতা প্রয়োজন</p>
+    </div>
+  </div>
+
+  <!-- ===== CERTIFICATE SCREEN ===== -->
+  <div id="screen-certificate" class="hidden">
+    <div id="certificateCard">
+      <div style="font-size:2.2rem;">🏅</div>
+      <div class="cert-title">CERTIFICATE OF ACHIEVEMENT</div>
+      <div class="cert-sub">TypeMaster Typing Speed Test</div>
+      <p class="cert-line">This certificate is proudly presented to</p>
+      <div class="cert-name" id="certName">Name</div>
+      <p class="cert-line">for successfully completing the typing speed test with excellence</p>
+      <div class="cert-details">
+        <div class="d-item"><div class="d-lbl">Language</div><div class="d-val" id="certLang">-</div></div>
+        <div class="d-item"><div class="d-lbl">Final WPM</div><div class="d-val" id="certWpm">-</div></div>
+        <div class="d-item"><div class="d-lbl">Accuracy</div><div class="d-val" id="certAcc">-</div></div>
+        <div class="d-item"><div class="d-lbl">Level Achieved</div><div class="d-val" id="certLevel">-</div></div>
+        <div class="d-item"><div class="d-lbl">Issue Date</div><div class="d-val" id="certDate">-</div></div>
+      </div>
+      <div class="cert-sign">
+        <div class="sign-block">
+          <div class="sign-name">MD. RAKIB HASAN</div>
+          <div class="sign-role">Verified by: MD. RAKIB HASAN (Lead Developer)<br>Issuing Authority / Developer Signature</div>
+        </div>
+        <div class="sign-seal">TYPE<br>MASTER<br>★</div>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="btn btn-gold" onclick="downloadCertificate()">⬇️ Download Certificate</button>
+      <button class="btn btn-ghost" onclick="backToDashboard()">⬅️ Dashboard</button>
+    </div>
+  </div>
+
+  <footer>
+    <div>Developed with ❤️ by <b>MD. RAKIB HASAN</b></div>
+    <div class="copyright">© 2026 TypeMaster. All Rights Reserved. | Designed & Developed by MD. RAKIB HASAN</div>
+  </footer>
+</div>
+
+<!-- Level up modal -->
+<div id="levelUpModal" class="modal-overlay hidden">
+  <div class="card levelup-box">
+    <div class="trophy">🏆</div>
+    <h2>LEVEL UP!</h2>
+    <p id="levelUpText">আপনি এখন Level 2 - Typer</p>
+    <button class="btn btn-primary" onclick="closeLevelUp()">চালিয়ে যান</button>
+  </div>
+</div>
+
+<script>
+/* ============== DATA ============== */
+const TEXTS = {
+  english: [
+    "The quick brown fox jumps over the lazy dog while the sun sets slowly behind the distant mountains painting the sky in brilliant shades of orange and purple.",
+    "Typing fast and accurately is a valuable skill in todays digital world where most of our communication happens through keyboards and screens every single day.",
+    "Success comes to those who practice consistently and never give up even when the journey seems difficult and the results are not immediately visible to others.",
+    "Technology has changed the way we live work and communicate with each other bringing both incredible opportunities and significant challenges for everyone around the world.",
+    "A journey of a thousand miles begins with a single step and every expert was once a beginner who refused to give up on their dreams.",
+    "Practice makes perfect and the more you type the faster and more accurate you will become so keep pushing yourself every single day without fail."
+  ],
+  bangla: [
+    "আমরা সবাই স্বপ্ন দেখি একটি সুন্দর ভবিষ্যতের এবং সেই স্বপ্ন পূরণের জন্য প্রতিদিন কঠোর পরিশ্রম করে যাই নিরলসভাবে।",
+    "বাংলা ভাষা আমাদের মাতৃভাষা এবং এই ভাষার প্রতি আমাদের গর্ব ও ভালোবাসা চিরকাল অটুট থাকবে সকল প্রজন্মের কাছে।",
+    "প্রযুক্তির উন্নতির সাথে সাথে আমাদের জীবনযাত্রার মান অনেক বেড়েছে এবং কাজ করার পদ্ধতিও সম্পূর্ণ বদলে গেছে এখন।",
+    "নিয়মিত অনুশীলন করলে যে কোনো কাজে দক্ষতা অর্জন করা সম্ভব এবং টাইপিং স্পিড বাড়ানোর জন্যও এটি সবচেয়ে কার্যকর উপায়।",
+    "সময়ের মূল্য বোঝা এবং তা সঠিকভাবে ব্যবহার করা একজন সফল মানুষের অন্যতম প্রধান বৈশিষ্ট্য যা সবারই অনুশীলন করা উচিত।",
+    "শিক্ষা জীবনের সবচেয়ে বড় সম্পদ এবং এই সম্পদ অর্জনের জন্য আমাদের সকলের উচিত নিয়মিত পড়াশোনা ও চর্চা চালিয়ে যাওয়া।"
+  ]
+};
+
+const LEVELS = [
+  {level:1, name:"Rookie",      minXp:0},
+  {level:2, name:"Typer",       minXp:150},
+  {level:3, name:"Pro",         minXp:400},
+  {level:4, name:"Master",      minXp:800},
+  {level:5, name:"Typing God",  minXp:1500}
+];
+
+/* ============== STATE ============== */
+let player = null;
+let currentLang = 'english';
+let currentDuration = 60;
+let targetText = "";
+let timer = null;
+let timeLeft = 60;
+let startTime = null;
+let testStarted = false;
+let prevLen = 0;
+let mistakes = 0;
+let lastResult = null;
+
+/* ============== STORAGE ============== */
+function loadPlayer(name){
+  const key = 'typemaster_' + name.trim().toLowerCase();
+  let data = localStorage.getItem(key);
+  if(data){
+    player = JSON.parse(data);
+  } else {
+    player = {
+      name: name.trim(),
+      xp: 0,
+      level: 1,
+      highScores: { english:{wpm:0,acc:0}, bangla:{wpm:0,acc:0} }
+    };
+  }
+  player.storageKey = key;
+  savePlayer();
+}
+function savePlayer(){
+  const toSave = Object.assign({}, player);
+  delete toSave.storageKey;
+  localStorage.setItem(player.storageKey, JSON.stringify(toSave));
+}
+
+/* ============== ENTRY ============== */
+function enterApp(){
+  const nameVal = document.getElementById('nameInput').value.trim();
+  if(!nameVal){
+    alert('অনুগ্রহ করে আপনার নাম লিখুন / Please enter your name');
+    return;
+  }
+  loadPlayer(nameVal);
+  document.getElementById('screen-entry').classList.add('hidden');
+  document.getElementById('screen-dashboard').classList.remove('hidden');
+  renderDashboard();
+}
+document.getElementById('nameInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter') enterApp();
+});
+
+/* ============== DASHBOARD ============== */
+function getLevelInfo(xp){
+  let current = LEVELS[0];
+  for(const lv of LEVELS){
+    if(xp >= lv.minXp) current = lv;
+  }
+  const idx = LEVELS.indexOf(current);
+  const next = LEVELS[idx+1] || null;
+  return {current, next};
+}
+
+function renderDashboard(){
+  document.getElementById('chipName').textContent = player.name;
+  document.getElementById('dashGreeting').textContent = 'স্বাগতম, ' + player.name + '! 👋';
+
+  const {current, next} = getLevelInfo(player.xp);
+  player.level = current.level;
+  document.getElementById('chipLevel').textContent = 'Lv.' + current.level;
+  document.getElementById('dashLevel').textContent = current.level;
+  document.getElementById('dashRank').textContent = current.name;
+  document.getElementById('dashBestEnWpm').textContent = player.highScores.english.wpm;
+  document.getElementById('dashBestBnWpm').textContent = player.highScores.bangla.wpm;
+
+  let pct = 100, needText = 'সর্বোচ্চ লেভেলে পৌঁছেছেন! 🎉';
+  if(next){
+    const span = next.minXp - current.minXp;
+    const progressed = player.xp - current.minXp;
+    pct = Math.min(100, Math.round((progressed/span)*100));
+    needText = 'পরবর্তী লেভেল: ' + next.minXp + ' XP';
+  }
+  document.getElementById('xpFill').style.width = pct + '%';
+  document.getElementById('xpCurrentText').textContent = player.xp + ' XP';
+  document.getElementById('xpNeedText').textContent = needText;
+}
+
+function setLanguage(lang){
+  currentLang = lang;
+  document.getElementById('modeEnBtn').classList.toggle('active', lang==='english');
+  document.getElementById('modeBnBtn').classList.toggle('active', lang==='bangla');
+}
+function setDuration(d, btn){
+  currentDuration = d;
+  document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function backToDashboard(){
+  clearInterval(timer);
+  document.getElementById('screen-test').classList.add('hidden');
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-certificate').classList.add('hidden');
+  document.getElementById('screen-dashboard').classList.remove('hidden');
+  renderDashboard();
+}
+
+/* ============== TEST ============== */
+function buildTargetText(){
+  const pool = TEXTS[currentLang];
+  let shuffled = [...pool].sort(()=>Math.random()-0.5);
+  // repeat pool enough times so user unlikely to run out before time ends
+  let combined = [];
+  for(let i=0;i<4;i++){
+    combined = combined.concat([...pool].sort(()=>Math.random()-0.5));
+  }
+  return combined.join(' ');
+}
+
+function renderTargetText(){
+  const disp = document.getElementById('textDisplay');
+  disp.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  for(const ch of targetText){
+    const span = document.createElement('span');
+    span.textContent = ch;
+    span.className = 'ch-pending';
+    frag.appendChild(span);
+  }
+  disp.appendChild(frag);
+}
+
+function startTest(){
+  targetText = buildTargetText();
+  timeLeft = currentDuration;
+  testStarted = false;
+  startTime = null;
+  prevLen = 0;
+  mistakes = 0;
+  clearInterval(timer);
+
+  document.getElementById('screen-dashboard').classList.add('hidden');
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-test').classList.remove('hidden');
+
+  document.getElementById('liveTimer').textContent = timeLeft;
+  document.getElementById('liveWpm').textContent = '0';
+  document.getElementById('liveAcc').textContent = '100%';
+  document.getElementById('liveMistakes').textContent = '0';
+
+  const input = document.getElementById('typingInput');
+  input.value = '';
+  input.disabled = false;
+  input.className = currentLang === 'bangla' ? 'lang-bn' : '';
+  renderTargetText();
+  setTimeout(()=>input.focus(), 50);
+}
+function restartSameTest(){ startTest(); }
+
+document.getElementById('typingInput').addEventListener('input', function(e){
+  const typed = this.value;
+
+  if(!testStarted){
+    testStarted = true;
+    startTime = Date.now();
+    timer = setInterval(tick, 1000);
+  }
+
+  if(typed.length > prevLen){
+    const idx = typed.length - 1;
+    if(typed[idx] !== targetText[idx]){
+      mistakes++;
+    }
+  }
+  prevLen = typed.length;
+
+  renderComparison(typed);
+  updateLiveStats(typed);
+
+  if(typed.length >= targetText.length){
+    endTest();
+  }
+});
+
+function renderComparison(typed){
+  const spans = document.getElementById('textDisplay').children;
+  for(let i=0;i<spans.length;i++){
+    if(i < typed.length){
+      spans[i].className = (typed[i] === targetText[i]) ? 'ch-correct' : 'ch-incorrect';
+    } else if(i === typed.length){
+      spans[i].className = 'ch-current';
+    } else {
+      spans[i].className = 'ch-pending';
+    }
+  }
+  // auto-scroll current char into view
+  if(spans[typed.length]){
+    spans[typed.length].scrollIntoView({block:'nearest'});
+  }
+}
+
+function computeStats(typed){
+  let correct = 0;
+  for(let i=0;i<typed.length;i++){
+    if(typed[i] === targetText[i]) correct++;
+  }
+  const elapsedMin = startTime ? Math.max((Date.now()-startTime)/60000, 1/600) : 1/600;
+  const wpm = Math.round((correct/5) / elapsedMin);
+  const acc = typed.length > 0 ? Math.round((correct/typed.length)*100) : 100;
+  return {correct, wpm: isFinite(wpm)?Math.max(wpm,0):0, acc};
+}
+
+function updateLiveStats(typed){
+  const {wpm, acc} = computeStats(typed);
+  document.getElementById('liveWpm').textContent = wpm;
+  document.getElementById('liveAcc').textContent = acc + '%';
+  document.getElementById('liveMistakes').textContent = mistakes;
+}
+
+function tick(){
+  timeLeft--;
+  document.getElementById('liveTimer').textContent = timeLeft;
+  if(timeLeft <= 0){
+    endTest();
+  }
+}
+
+function endTest(){
+  clearInterval(timer);
+  const input = document.getElementById('typingInput');
+  input.disabled = true;
+  const typed = input.value;
+  const {wpm, acc} = computeStats(typed);
+
+  lastResult = {
+    wpm, acc, mistakes,
+    lang: currentLang,
+    date: new Date()
+  };
+
+  // XP calculation
+  const xpGained = Math.max(Math.round(wpm * (acc/100) * 2), 5);
+  const oldLevelInfo = getLevelInfo(player.xp);
+  player.xp += xpGained;
+  const newLevelInfo = getLevelInfo(player.xp);
+
+  // update high scores
+  const hs = player.highScores[currentLang];
+  if(wpm > hs.wpm){ hs.wpm = wpm; hs.acc = acc; }
+
+  savePlayer();
+  showResults(xpGained);
+
+  if(newLevelInfo.current.level > oldLevelInfo.current.level){
+    setTimeout(()=> showLevelUp(newLevelInfo.current), 600);
+  }
+}
+
+/* ============== RESULTS ============== */
+function showResults(xpGained){
+  document.getElementById('screen-test').classList.add('hidden');
+  document.getElementById('screen-results').classList.remove('hidden');
+
+  document.getElementById('resWpm').textContent = lastResult.wpm;
+  document.getElementById('resAcc').textContent = lastResult.acc + '%';
+  document.getElementById('resMistakes').textContent = lastResult.mistakes;
+  document.getElementById('resXp').textContent = '+' + xpGained;
+
+  let title, emoji;
+  if(lastResult.acc >= 95 && lastResult.wpm >= 50){ title='অসাধারণ! আপনি একজন টাইপিং মাস্টার! 🔥'; emoji='🏆'; }
+  else if(lastResult.acc >= 90){ title='দারুণ পারফরম্যান্স! 🎉'; emoji='🎉'; }
+  else if(lastResult.acc >= 75){ title='ভালো হয়েছে, আরেকটু চেষ্টা করুন! 💪'; emoji='👍'; }
+  else { title='অনুশীলন চালিয়ে যান! 📚'; emoji='✍️'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultSub').textContent = 'ভাষা: ' + (lastResult.lang==='english'?'English':'বাংলা');
+
+  const certBtn = document.getElementById('certBtn');
+  const certHint = document.getElementById('certHint');
+  if(lastResult.acc >= 90){
+    certBtn.disabled = false;
+    certHint.textContent = 'অভিনন্দন! আপনি সার্টিফিকেট পাওয়ার যোগ্য 🎓';
+  } else {
+    certBtn.disabled = true;
+    certHint.textContent = 'সার্টিফিকেট পেতে কমপক্ষে ৯০% নির্ভুলতা প্রয়োজন (বর্তমান: ' + lastResult.acc + '%)';
+  }
+}
+
+/* ============== LEVEL UP ============== */
+function showLevelUp(levelObj){
+  document.getElementById('levelUpText').textContent =
+    'আপনি এখন Level ' + levelObj.level + ' - ' + levelObj.name + ' !';
+  document.getElementById('levelUpModal').classList.remove('hidden');
+}
+function closeLevelUp(){
+  document.getElementById('levelUpModal').classList.add('hidden');
+  renderDashboard();
+}
+
+/* ============== CERTIFICATE ============== */
+function goCertificate(){
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-certificate').classList.remove('hidden');
+
+  const {current} = getLevelInfo(player.xp);
+  document.getElementById('certName').textContent = player.name;
+  document.getElementById('certLang').textContent = lastResult.lang==='english' ? 'English' : 'বাংলা (Bangla)';
+  document.getElementById('certWpm').textContent = lastResult.wpm + ' WPM';
+  document.getElementById('certAcc').textContent = lastResult.acc + '%';
+  document.getElementById('certLevel').textContent = 'Lv.' + current.level + ' - ' + current.name;
+  document.getElementById('certDate').textContent = lastResult.date.toLocaleDateString('en-GB');
+}
+
+function downloadCertificate(){
+  const W = 1200, H = 800;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // background gradient
+  const grad = ctx.createLinearGradient(0,0,W,H);
+  grad.addColorStop(0,'#1a1333');
+  grad.addColorStop(1,'#2b1a4a');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+
+  // outer border
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 8;
+  ctx.strokeRect(20,20,W-40,H-40);
+  ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(40,40,W-80,H-80);
+
+  ctx.textAlign = 'center';
+
+  // seal emoji-like circle top
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = '60px sans-serif';
+  ctx.fillText('🏅', W/2, 130);
+
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = 'bold 44px Georgia, serif';
+  ctx.fillText('CERTIFICATE OF ACHIEVEMENT', W/2, 200);
+
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '20px Georgia, serif';
+  ctx.fillText('TYPEMASTER TYPING SPEED TEST', W/2, 235);
+
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = 'italic 22px Georgia, serif';
+  ctx.fillText('This certificate is proudly presented to', W/2, 290);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 56px Georgia, serif';
+  ctx.fillText(player.name, W/2, 365);
+
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = 'italic 20px Georgia, serif';
+  ctx.fillText('for successfully completing the typing speed test with excellence', W/2, 405);
+
+  const {current} = getLevelInfo(player.xp);
+  const details = [
+    ['Language', lastResult.lang==='english' ? 'English' : 'Bangla'],
+    ['Final WPM', lastResult.wpm + ' WPM'],
+    ['Accuracy', lastResult.acc + '%'],
+    ['Level', 'Lv.' + current.level + ' ' + current.name],
+    ['Issue Date', lastResult.date.toLocaleDateString('en-GB')]
+  ];
+  const boxW = 200, boxH = 80, gap = 20;
+  const totalW = details.length*boxW + (details.length-1)*gap;
+  let startX = (W-totalW)/2;
+  const boxY = 450;
+  details.forEach(([lbl,val])=>{
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    roundRect(ctx, startX, boxY, boxW, boxH, 12);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(251,191,36,0.3)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, startX, boxY, boxW, boxH, 12);
+    ctx.stroke();
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '13px Arial';
+    ctx.fillText(lbl.toUpperCase(), startX+boxW/2, boxY+28);
+
+    ctx.fillStyle = '#22d3ee';
+    ctx.font = 'bold 20px Arial';
+    ctx.fillText(val, startX+boxW/2, boxY+58);
+
+    startX += boxW + gap;
+  });
+
+  // signature line
+  ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+  ctx.setLineDash([6,6]);
+  ctx.beginPath();
+  ctx.moveTo(80, 600);
+  ctx.lineTo(W-80, 600);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = 'italic bold 36px "Brush Script MT", cursive, Georgia';
+  ctx.fillText('MD. RAKIB HASAN', 90, 660);
+
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '15px Arial';
+  ctx.fillText('Verified by: MD. RAKIB HASAN (Lead Developer)', 90, 685);
+  ctx.fillText('Issuing Authority / Developer Signature', 90, 705);
+
+  // seal circle
+  ctx.textAlign = 'center';
+  const sealX = W-150, sealY = 650;
+  const sealGrad = ctx.createRadialGradient(sealX,sealY,5,sealX,sealY,45);
+  sealGrad.addColorStop(0,'#fbbf24');
+  sealGrad.addColorStop(1,'#b45309');
+  ctx.fillStyle = sealGrad;
+  ctx.beginPath();
+  ctx.arc(sealX, sealY, 45, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#2a1a04';
+  ctx.font = 'bold 12px Arial';
+  ctx.fillText('TYPE', sealX, sealY-8);
+  ctx.fillText('MASTER', sealX, sealY+6);
+  ctx.fillText('★', sealX, sealY+22);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#64748b';
+  ctx.font = '13px Arial';
+  ctx.fillText('© TypeMaster — Developed by MD. RAKIB HASAN', W/2, H-35);
+
+  canvas.toBlob(async function(blob){
+    const filename = 'TypeMaster_Certificate_' + player.name.replace(/\s+/g,'_') + '.png';
+    try{
+      const downloads = await claude.use('downloads');
+      if(downloads){
+        await downloads.save({filename, data: blob});
+        return;
+      }
+    }catch(e){ /* fall through to direct link below */ }
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  });
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+</script>
+</body>
+</html>
